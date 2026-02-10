@@ -41,26 +41,33 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-            .csrf(csrf -> csrf.disable())
-            .cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
 
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/movies/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/movies/**").authenticated()
-                .requestMatchers(HttpMethod.PUT, "/api/movies/**").authenticated()
-                .requestMatchers(HttpMethod.DELETE, "/api/movies/**").authenticated()
-                .anyRequest().authenticated()
-            )
+                .authorizeHttpRequests(auth -> auth
 
-            .addFilterBefore(
-                jwtAuthFilter,
-                UsernamePasswordAuthenticationFilter.class
-            );
+                        // 🔓 Auth APIs
+                        .requestMatchers("/api/auth/**").permitAll()
+
+                        // 🔓 Public movies (Movies page)
+                        .requestMatchers(HttpMethod.GET, "/api/movies/public").permitAll()
+
+                        // 🔐 User-specific movies (Explore)
+                        .requestMatchers(HttpMethod.GET, "/api/movies/my").authenticated()
+
+                        // 🔐 Movie write operations
+                        .requestMatchers(HttpMethod.POST, "/api/movies/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/movies/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/movies/**").authenticated()
+
+                        // 🔐 Everything else
+                        .anyRequest().authenticated())
+
+                .addFilterBefore(
+                        jwtAuthFilter,
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -71,23 +78,19 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of(
-            "http://localhost:5173",
-            "http://localhost:3000",
-            "https://cravetech.vercel.app"
-        ));
+                "http://localhost:5173",
+                "http://localhost:3000",
+                "https://cravetech.vercel.app"));
 
         config.setAllowedMethods(List.of(
-            "GET", "POST", "PUT", "DELETE", "OPTIONS"
-        ));
+                "GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
         config.setAllowedHeaders(List.of(
-            "Authorization", "Content-Type"
-        ));
+                "Authorization", "Content-Type"));
 
         config.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source =
-            new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
         source.registerCorsConfiguration("/**", config);
         return source;
