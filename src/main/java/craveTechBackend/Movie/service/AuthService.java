@@ -1,14 +1,14 @@
-package craveTechBackend.Books.service;
-
-import craveTechBackend.Books.models.User;
-import craveTechBackend.Books.repository.UserRepository;
-import craveTechBackend.Books.security.JwtUtil;
+package craveTechBackend.Movie.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.stereotype.Service;
+
+import craveTechBackend.Movie.models.User;
+import craveTechBackend.Movie.repository.UserRepository;
+import craveTechBackend.Movie.security.JwtUtil;
 
 import java.util.HashMap;
 import java.util.Map;

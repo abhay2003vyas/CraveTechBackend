@@ -1,13 +1,13 @@
-package craveTechBackend.Books;
+package craveTechBackend.Movie;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BooksApplication {
+public class MovieApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BooksApplication.class, args);
+		SpringApplication.run(MovieApplication.class, args);
 	}
 
 }

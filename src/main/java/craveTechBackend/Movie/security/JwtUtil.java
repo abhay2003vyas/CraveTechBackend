@@ -1,4 +1,4 @@
-package craveTechBackend.Books.security;
+package craveTechBackend.Movie.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

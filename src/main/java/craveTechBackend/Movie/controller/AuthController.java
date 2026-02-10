@@ -1,10 +1,10 @@
-package craveTechBackend.Books.controller;
+package craveTechBackend.Movie.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import craveTechBackend.Books.models.User;
-import craveTechBackend.Books.service.AuthService;
+import craveTechBackend.Movie.models.User;
+import craveTechBackend.Movie.service.AuthService;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package craveTechBackend.Books.security;
+package craveTechBackend.Movie.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

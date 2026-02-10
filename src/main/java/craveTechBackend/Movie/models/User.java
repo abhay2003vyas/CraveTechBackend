@@ -1,4 +1,4 @@
-package craveTechBackend.Books.models;
+package craveTechBackend.Movie.models;
 
 import jakarta.persistence.*;
 

@@ -1,8 +1,8 @@
-package craveTechBackend.Books.repository;
-
-import craveTechBackend.Books.models.User;
+package craveTechBackend.Movie.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import craveTechBackend.Movie.models.User;
 
 import java.util.Optional;
 
