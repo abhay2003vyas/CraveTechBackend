@@ -22,17 +22,25 @@ public class Movie {
     @Column(nullable = false)
     private Integer releaseYear;
 
-    // Constructors
+    // 👇 NEW FIELD: OWNER (logged-in user email)
+    @Column(nullable = false)
+    private String createdBy;
+
+    // ================= CONSTRUCTORS =================
+
     public Movie() {}
 
-    public Movie(String title, String director, String genre, Integer releaseYear) {
+    public Movie(String title, String director, String genre,
+                 Integer releaseYear, String createdBy) {
         this.title = title;
         this.director = director;
         this.genre = genre;
         this.releaseYear = releaseYear;
+        this.createdBy = createdBy;
     }
 
-    // Getters & Setters
+    // ================= GETTERS & SETTERS =================
+
     public Long getId() {
         return id;
     }
@@ -67,5 +75,13 @@ public class Movie {
 
     public void setReleaseYear(Integer releaseYear) {
         this.releaseYear = releaseYear;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }
