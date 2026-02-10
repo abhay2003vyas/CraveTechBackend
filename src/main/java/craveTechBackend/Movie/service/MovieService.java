@@ -2,6 +2,7 @@ package craveTechBackend.Movie.service;
 
 import java.util.List;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import craveTechBackend.Movie.models.Movie;
@@ -16,18 +17,40 @@ public class MovieService {
         this.movieRepository = movieRepository;
     }
 
-    // ➕ Add movie
-    public Movie addMovie(Movie movie) {
+    // ================= ADD MOVIE =================
+    // ➕ Add movie for logged-in user
+    public Movie addMovie(Movie movie, String userEmail) {
+
+        movie.setCreatedBy(userEmail); // 👈 owner set here
         return movieRepository.save(movie);
     }
 
-    // 📥 Get all movies
+    // ================= FETCH =================
+
+    // 🎬 Public movies (Movies page)
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }
 
-    // 🗑️ Delete movie
-    public void deleteMovie(Long id) {
-        movieRepository.deleteById(id);
+    // 👤 User-specific movies (Explore page)
+    public List<Movie> getMoviesByUser(String userEmail) {
+        return movieRepository.findByCreatedBy(userEmail);
+    }
+
+    // ================= DELETE =================
+
+    // 🗑️ Delete movie (ONLY OWNER)
+    public void deleteMovie(Long id, String userEmail) {
+
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Movie not found")
+                );
+
+        if (!movie.getCreatedBy().equals(userEmail)) {
+            throw new AccessDeniedException("You are not allowed to delete this movie");
+        }
+
+        movieRepository.delete(movie);
     }
 }
