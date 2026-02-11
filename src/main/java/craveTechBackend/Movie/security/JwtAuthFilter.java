@@ -36,6 +36,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
+        String path = request.getServletPath();
+
+        // ✅ SKIP JWT FOR PUBLIC ENDPOINTS
+        if (
+            path.startsWith("/api/auth") ||
+            (path.startsWith("/api/movies") && request.getMethod().equals("GET"))
+        ) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // 🔐 JWT VALIDATION
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
@@ -45,9 +57,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             username = jwtUtil.extractUsername(token);
         }
 
-        if (username != null &&
-            SecurityContextHolder.getContext().getAuthentication() == null) {
-
+        if (
+            username != null &&
+            SecurityContextHolder.getContext().getAuthentication() == null
+        ) {
             UserDetails userDetails =
                     userDetailsService.loadUserByUsername(username);
 
