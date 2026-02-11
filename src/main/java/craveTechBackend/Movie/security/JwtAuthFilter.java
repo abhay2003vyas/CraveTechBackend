@@ -38,16 +38,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String path = request.getServletPath();
 
-        // ✅ SKIP JWT FOR PUBLIC ENDPOINTS
+        // ✅ PUBLIC ENDPOINTS (NO JWT)
         if (
             path.startsWith("/api/auth") ||
-            (path.startsWith("/api/movies") && request.getMethod().equals("GET"))
+            path.equals("/api/movies/public")
         ) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 🔐 JWT VALIDATION
+        // 🔐 JWT REQUIRED
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
